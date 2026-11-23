@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% block titulo %}Carrinho{% endblock %}
+{% block conteudo %}
+<div class="container estreito">
+  <p class="sobretitulo">Passo 2 de 3 · revise sua contribuição</p>
+  <h1 class="mb-1">Carrinho de doações</h1>
+
+  {% if not linhas %}
+    <div class="vazio mt-4">
+      <i class="bi bi-basket2"></i>
+      <p>Seu carrinho está vazio. Escolha um evento para ver os itens que ele precisa.</p>
+      <a href="{{ url_for('public.inicio') }}" class="btn btn-primario">Ver eventos</a>
+    </div>
+  {% else %}
+    <p class="text-secundario mb-4">
+      Para o evento <a href="{{ url_for('eventos.detalhe', evento_id=evento.id) }}">{{ evento.nome }}</a>
+      · {{ evento.data|data_br }}
+    </p>
+
+    <div class="painel">
+      <ul class="lista-carrinho">
+        {% for linha in linhas %}
+          {% set item = linha.item %}
+          <li class="{% if linha.excede %}com-erro{% endif %}">
+            <div class="lc-nome">
+              <strong>{{ item.nome }}</strong>
+              <span>{{ item.quantidade_disponivel }} {{ item.unidade }} disponíveis</span>
+              {% if linha.excede %}
+                <span class="erro-linha">A quantidade escolhida não está mais disponível. Ajuste antes de confirmar.</span>
+              {% endif %}
+            </div>
+            <form method="post" action="{{ url_for('doacoes.alterar', item_id=item.id) }}" class="lc-qtd form-auto">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <div class="seletor-qtd" data-max="{{ [item.quantidade_disponivel, linha.quantidade]|max }}" data-auto>
+                <button type="button" data-passo="-1" aria-label="Diminuir">−</button>
+                <input type="number" name="quantidade" value="{{ linha.quantidade }}" min="0" aria-label="Quantidade de {{ item.nome }}">
+                <button type="button" data-passo="1" aria-label="Aumentar">+</button>
+              </div>
+              <span class="lc-unidade">{{ item.unidade }}</span>
+              <noscript><button class="btn btn-sm btn-contorno">Atualizar</button></noscript>
+            </form>
+            <form method="post" action="{{ url_for('doacoes.remover', item_id=item.id) }}">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button type="submit" class="btn-icone" aria-label="Remover {{ item.nome }}"><i class="bi bi-x-lg"></i></button>
+            </form>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="d-flex flex-column flex-sm-row justify-content-between gap-3 mt-4">
+      <form method="post" action="{{ url_for('doacoes.esvaziar') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <button type="submit" class="btn btn-link link-discreto px-0">Esvaziar carrinho</button>
+      </form>
+      <div class="d-flex gap-2">
+        <a href="{{ url_for('eventos.detalhe', evento_id=evento.id) }}" class="btn btn-contorno">Adicionar mais itens</a>
+        {% if evento.aberto %}
+          <a href="{{ url_for('doacoes.confirmar') }}" class="btn btn-primario">Continuar</a>
+        {% endif %}
+      </div>
+    </div>
+    {% if not evento.aberto %}
+      <div class="caixa-nota caixa-alerta mt-3">Este evento foi encerrado e não recebe mais doações.</div>
+    {% endif %}
+  {% endif %}
+</div>
+{% endblock %}

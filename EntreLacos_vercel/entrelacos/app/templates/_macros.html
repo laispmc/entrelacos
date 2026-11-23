@@ -1,0 +1,29 @@
+{% macro campo(field, classe='', ajuda=None) %}
+  <div class="mb-3 {{ classe }}">
+    {% if field.type == 'BooleanField' %}
+      <div class="form-check">
+        {{ field(class='form-check-input') }}
+        {{ field.label(class='form-check-label') }}
+      </div>
+    {% else %}
+      {{ field.label(class='form-label') }}
+      {% set css = 'form-select' if field.type == 'SelectField' else 'form-control' %}
+      {{ field(class=css ~ (' is-invalid' if field.errors else ''), **kwargs) }}
+      {% if ajuda %}<div class="form-text">{{ ajuda }}</div>{% endif %}
+      {% for erro in field.errors %}<div class="invalid-feedback">{{ erro }}</div>{% endfor %}
+    {% endif %}
+  </div>
+{% endmacro %}
+
+{% macro selo(status, rotulo) %}
+  <span class="selo selo-{{ status }}">{{ rotulo }}</span>
+{% endmacro %}
+
+{% macro barra(comprometido, recebido=None, rotulo='') %}
+  <div class="barra" role="img" aria-label="{{ rotulo }}">
+    <span class="barra-comprometido" style="width: {{ [comprometido, 100]|min }}%"></span>
+    {% if recebido is not none %}
+      <span class="barra-recebido" style="width: {{ [recebido, 100]|min }}%"></span>
+    {% endif %}
+  </div>
+{% endmacro %}

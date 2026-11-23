@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block titulo %}EntreLaços{% endblock %} · EntreLaços</title>
+  <meta name="description" content="Organize campanhas de doação para eventos beneficentes e comunitários.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <link rel="icon" href="{{ url_for('static', filename='img/logo.svg') }}" type="image/svg+xml">
+</head>
+{% set ep = request.endpoint or '' %}
+{% set area_admin = current_user.is_authenticated and (
+     (ep.startswith('admin.') and ep != 'admin.login') or
+     (ep.startswith('eventos.') and ep != 'eventos.detalhe')) %}
+
+{% macro item_menu(endpoint, icone, rotulo, ativos=(), contador=None) %}
+  {% set ativo = request.endpoint == endpoint or request.endpoint in ativos %}
+  <li>
+    <a href="{{ url_for(endpoint, **kwargs) }}" class="menu-link {% if ativo %}ativo{% endif %}" {% if ativo %}aria-current="page"{% endif %}>
+      <i class="bi {{ icone }}" aria-hidden="true"></i>
+      <span>{{ rotulo }}</span>
+      {% if contador %}<span class="menu-contador" aria-label="{{ contador }} itens">{{ contador }}</span>{% endif %}
+    </a>
+  </li>
+{% endmacro %}
+
+<body class="{% if area_admin %}area-admin{% endif %} {% block corpo_classe %}{% endblock %}">
+  <a class="pular-conteudo" href="#conteudo">Pular para o conteúdo</a>
+
+  {# Barra superior: aparece só no celular / tablet #}
+  <header class="barra-movel d-lg-none">
+    <button class="btn-icone" type="button" data-bs-toggle="offcanvas" data-bs-target="#menuLateral"
+            aria-controls="menuLateral" aria-label="Abrir menu">
+      <i class="bi bi-list"></i>
+    </button>
+    <a class="marca" href="{{ url_for('admin.dashboard') if area_admin else url_for('public.inicio') }}">
+      <img src="{{ url_for('static', filename='img/logo.svg') }}" alt="" width="28" height="28">
+      <span>Entre<em>Laços</em></span>
+    </a>
+    {% if not area_admin %}
+      <div class="d-flex align-items-center gap-1">
+        {% if not current_user.is_authenticated %}
+          <a class="link-entrar" href="{{ url_for('admin.login') }}">Entrar</a>
+        {% endif %}
+        <a class="btn-icone link-carrinho" href="{{ url_for('doacoes.carrinho') }}" aria-label="Meu carrinho">
+          <i class="bi bi-basket2"></i>
+          {% if carrinho_qtd %}<span class="contador">{{ carrinho_qtd }}</span>{% endif %}
+        </a>
+      </div>
+    {% else %}
+      <span class="btn-icone" aria-hidden="true"></span>
+    {% endif %}
+  </header>
+
+  <div class="app">
+    <aside class="offcanvas-lg offcanvas-start lateral" tabindex="-1" id="menuLateral" aria-label="Menu principal">
+      <div class="lateral-interno">
+        <div class="lateral-topo">
+          <a class="marca" href="{{ url_for('admin.dashboard') if area_admin else url_for('public.inicio') }}">
+            <img src="{{ url_for('static', filename='img/logo.svg') }}" alt="" width="34" height="34">
+            <span>Entre<em>Laços</em></span>
+          </a>
+          <button type="button" class="btn-close d-lg-none" data-bs-dismiss="offcanvas" data-bs-target="#menuLateral" aria-label="Fechar menu"></button>
+        </div>
+
+        {% if area_admin %}
+          <p class="menu-titulo">Organização</p>
+          <ul class="menu">
+            {{ item_menu('admin.dashboard', 'bi-grid-1x2', 'Painel') }}
+            {{ item_menu('eventos.gerenciar', 'bi-calendar3', 'Eventos', ('eventos.administrar', 'eventos.editar', 'eventos.editar_item')) }}
+            {{ item_menu('admin.doacoes', 'bi-inbox', 'Doações', ('admin.doacao',)) }}
+          </ul>
+          <a href="{{ url_for('eventos.novo') }}" class="btn btn-primario w-100 mt-2 {% if ep == 'eventos.novo' %}active{% endif %}">
+            <i class="bi bi-plus-lg"></i> Novo evento
+          </a>
+
+          <p class="menu-titulo">Site público</p>
+          <ul class="menu">
+            <li><a href="{{ url_for('public.inicio') }}" class="menu-link" target="_blank" rel="noopener"><i class="bi bi-box-arrow-up-right"></i><span>Ver o site</span></a></li>
+          </ul>
+
+          <div class="lateral-rodape">
+            <div class="usuario">
+              <span class="avatar" aria-hidden="true">{{ current_user.nome[:1]|upper }}</span>
+              <div>
+                <strong>{{ current_user.nome.split()[0] }}</strong>
+                <small>{{ current_user.email }}</small>
+              </div>
+            </div>
+            <form method="post" action="{{ url_for('admin.logout') }}">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button class="btn btn-contorno w-100" type="submit"><i class="bi bi-box-arrow-left"></i> Sair</button>
+            </form>
+          </div>
+
+        {% else %}
+          <p class="menu-titulo">Quero doar</p>
+          <ul class="menu">
+            {{ item_menu('public.inicio', 'bi-calendar2-heart', 'Eventos', ('eventos.detalhe',)) }}
+            {{ item_menu('doacoes.carrinho', 'bi-basket2', 'Meu carrinho', ('doacoes.confirmar', 'doacoes.sucesso'), contador=carrinho_qtd) }}
+          </ul>
+
+          <p class="menu-titulo">Já doei</p>
+          <ul class="menu">
+            {{ item_menu('doacoes.acompanhar', 'bi-search-heart', 'Acompanhar doação', ('doacoes.consulta',)) }}
+          </ul>
+
+          <p class="menu-titulo">Ajuda</p>
+          <ul class="menu">
+            {{ item_menu('public.como_funciona', 'bi-info-circle', 'Como funciona') }}
+          </ul>
+
+          <div class="lateral-rodape">
+            {% if current_user.is_authenticated %}
+              <p class="small text-secundario mb-2">Conectado como {{ current_user.nome.split()[0] }}</p>
+              <a href="{{ url_for('admin.dashboard') }}" class="btn btn-escuro w-100"><i class="bi bi-grid-1x2"></i> Ir para o painel</a>
+            {% else %}
+              <a href="{{ url_for('admin.login') }}" class="menu-link {% if ep == 'admin.login' %}ativo{% endif %}">
+                <i class="bi bi-person-lock" aria-hidden="true"></i>
+                <span>Sou organizador<small class="d-block fw-normal text-secundario">Entrar na área restrita</small></span>
+              </a>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    </aside>
+
+    <div class="conteudo">
+      {% if not area_admin %}
+        {# Barra superior no computador: acesso do organizador sempre visível #}
+        <div class="barra-topo d-none d-lg-flex">
+          <span class="text-secundario small"><i class="bi bi-unlock"></i> Para doar não é preciso cadastro nem login.</span>
+          <div class="d-flex align-items-center gap-2">
+            <a class="btn-icone link-carrinho" href="{{ url_for('doacoes.carrinho') }}" aria-label="Meu carrinho">
+              <i class="bi bi-basket2"></i>
+              {% if carrinho_qtd %}<span class="contador">{{ carrinho_qtd }}</span>{% endif %}
+            </a>
+            {% if current_user.is_authenticated %}
+              <a href="{{ url_for('admin.dashboard') }}" class="btn btn-escuro btn-sm"><i class="bi bi-grid-1x2"></i> Painel do organizador</a>
+            {% elif ep != 'admin.login' %}
+              <a href="{{ url_for('admin.login') }}" class="btn btn-escuro btn-sm"><i class="bi bi-box-arrow-in-right"></i> Entrar como organizador</a>
+            {% endif %}
+          </div>
+        </div>
+      {% endif %}
+      <main id="conteudo" class="{% block main_classe %}py-4 py-lg-5{% endblock %}" tabindex="-1">
+        {% with mensagens = get_flashed_messages(with_categories=true) %}
+          {% if mensagens %}
+            <div class="container avisos">
+              {% for categoria, mensagem in mensagens %}
+                <div class="alert alert-{{ categoria if categoria != 'message' else 'info' }} alert-dismissible fade show" role="alert">
+                  {{ mensagem }}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+                </div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+        {% block conteudo %}{% endblock %}
+      </main>
+
+      <footer class="rodape">
+        <div class="container">EntreLaços — doações que aproximam pessoas.</div>
+      </footer>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

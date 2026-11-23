@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% from '_macros.html' import selo %}
+{% block titulo %}Doações · {{ evento.nome }}{% endblock %}
+{% block conteudo %}
+<div class="container estreito">
+  <nav aria-label="Caminho" class="trilha">
+    <a href="{{ url_for('public.inicio') }}">Eventos</a>
+    <i class="bi bi-chevron-right"></i>
+    <a href="{{ url_for('eventos.detalhe', evento_id=evento.id) }}">{{ evento.nome }}</a>
+    <i class="bi bi-chevron-right"></i>
+    <span>Doações</span>
+  </nav>
+  <h1 class="mt-2 mb-2">Doações deste evento</h1>
+  <p class="text-secundario mb-3">
+    Pesquise pelo nome ou pelo telefone usado na confirmação para ver o que já foi recebido.
+  </p>
+
+  <ul class="contagem-status">
+    {% for chave in Status.TODOS %}
+      <li>{{ selo(chave, Status.ROTULOS[chave]) }} <strong>{{ resumo.get(chave, 0) }}</strong></li>
+    {% endfor %}
+  </ul>
+
+  {% include 'doacoes/_pesquisa.html' %}
+  {% with mostrar_evento = false %}{% include 'doacoes/_resultados.html' %}{% endwith %}
+
+  <p class="form-text mt-3">Doou em outro evento? <a href="{{ url_for('doacoes.acompanhar') }}">Pesquise em todos os eventos</a>.</p>
+</div>
+{% endblock %}

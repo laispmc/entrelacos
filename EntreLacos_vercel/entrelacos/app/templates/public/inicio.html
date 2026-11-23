@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% block titulo %}Eventos{% endblock %}
+{% block conteudo %}
+<div class="container">
+  <section class="boas-vindas" aria-labelledby="titulo-boas-vindas">
+    <h1 id="titulo-boas-vindas">Ajude um evento com o que ele realmente precisa.</h1>
+    <div class="caminhos">
+      <a href="#eventos" class="caminho caminho-principal">
+        <span class="caminho-icone"><i class="bi bi-heart"></i></span>
+        <span class="caminho-texto">
+          <strong>Quero doar</strong>
+          <span>Sem cadastro e sem login. Escolha um evento abaixo, separe os itens e confirme com nome e telefone.</span>
+        </span>
+        <i class="bi bi-arrow-down caminho-seta"></i>
+      </a>
+      <a href="{{ url_for('doacoes.acompanhar') }}" class="caminho">
+        <span class="caminho-icone"><i class="bi bi-search-heart"></i></span>
+        <span class="caminho-texto">
+          <strong>Já doei</strong>
+          <span>Veja se os itens que você prometeu já foram recebidos.</span>
+        </span>
+        <i class="bi bi-arrow-right caminho-seta"></i>
+      </a>
+    </div>
+  </section>
+
+  <header class="cabecalho-pagina" id="eventos">
+    <div>
+      <p class="sobretitulo">Passo 1 de 3</p>
+      <h2 class="h1-secao">Eventos recebendo doações</h2>
+    </div>
+    <ol class="mini-passos" aria-label="Como doar">
+      <li class="atual"><span>1</span> Escolha um evento</li>
+      <li><span>2</span> Separe os itens</li>
+      <li><span>3</span> Confirme</li>
+    </ol>
+  </header>
+
+  {% if eventos %}
+    <div class="row g-4">
+      {% for evento in eventos %}
+        <div class="col-sm-6 col-xl-4">
+          <article class="card-evento">
+            <a href="{{ url_for('eventos.detalhe', evento_id=evento.id) }}" class="card-evento-capa" tabindex="-1" aria-hidden="true">
+              <img src="{{ url_capa(evento) }}" alt="" loading="lazy">
+              <time class="card-evento-data" datetime="{{ evento.data.isoformat() }}">
+                <strong>{{ '%02d'|format(evento.data.day) }}</strong>
+                <span>{{ (evento.data|data_br('longo')).split(' ')[1] }}</span>
+              </time>
+            </a>
+            <div class="card-evento-corpo">
+              <h2><a href="{{ url_for('eventos.detalhe', evento_id=evento.id) }}">{{ evento.nome }}</a></h2>
+              {% if evento.local %}<p class="local"><i class="bi bi-geo-alt"></i> {{ evento.local }}</p>{% endif %}
+              {% set ativos = evento.itens_ativos %}
+              {% set faltando = ativos|selectattr('quantidade_disponivel')|list|length %}
+              <p class="resumo-itens">
+                {% if not ativos %}Lista de itens em preparação
+                {% elif faltando %}{{ faltando }} de {{ ativos|length }} itens ainda precisam de doadores
+                {% else %}Todos os itens já têm doadores{% endif %}
+              </p>
+              <a class="btn btn-primario w-100" href="{{ url_for('eventos.detalhe', evento_id=evento.id) }}">Ver itens e doar</a>
+            </div>
+          </article>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="vazio">
+      <i class="bi bi-calendar2-heart"></i>
+      <p>Nenhum evento está recebendo doações agora. Volte em breve.</p>
+    </div>
+  {% endif %}
+
+  {% if encerrados %}
+    <section class="mt-5" aria-labelledby="titulo-encerrados">
+      <h2 id="titulo-encerrados" class="titulo-secao mb-3">Eventos encerrados</h2>
+      <ul class="lista-encerrados">
+        {% for evento in encerrados %}
+          <li>
+            <img src="{{ url_capa(evento) }}" alt="" loading="lazy">
+            <div>
+              <a href="{{ url_for('eventos.detalhe', evento_id=evento.id) }}">{{ evento.nome }}</a>
+              <span>{{ evento.data|data_br }}</span>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    </section>
+  {% endif %}
+</div>
+{% endblock %}

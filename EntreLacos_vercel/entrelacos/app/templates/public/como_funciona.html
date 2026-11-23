@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block titulo %}Como funciona{% endblock %}
+{% block conteudo %}
+<div class="container estreito">
+  <p class="sobretitulo">Como funciona</p>
+  <h1 class="mb-4">Doar pelo EntreLaços leva poucos minutos.</h1>
+
+  <ol class="passos">
+    <li>
+      <h2>Escolha o evento</h2>
+      <p>Na página inicial estão os eventos que ainda recebem doações. Cada um mostra a data, o local e o que falta.</p>
+    </li>
+    <li>
+      <h2>Separe os itens</h2>
+      <p>Informe quanto você pode levar de cada item. A lista mostra o que já foi prometido por outras pessoas, para ninguém doar além do necessário.</p>
+    </li>
+    <li>
+      <h2>Confirme com nome e telefone</h2>
+      <p>Não precisa criar conta. Ao confirmar, as quantidades ficam reservadas para você.</p>
+    </li>
+    <li>
+      <h2>Entregue e acompanhe</h2>
+      <p>Leve os itens ao organizador. Na página de consulta do evento você vê o que já foi registrado como recebido. Seu telefone nunca aparece publicamente.</p>
+    </li>
+  </ol>
+
+  <div class="caixa-nota mt-4">
+    <strong>Precisa mudar algo?</strong> Depois de confirmada, a doação não pode ser alterada pelo site.
+    Fale com o organizador do evento para corrigir ou desistir.
+  </div>
+
+  <a href="{{ url_for('public.inicio') }}" class="btn btn-primario mt-4">Ver eventos</a>
+</div>
+{% endblock %}

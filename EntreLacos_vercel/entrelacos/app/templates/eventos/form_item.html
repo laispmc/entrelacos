@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% from '_macros.html' import campo %}
+{% block titulo %}Editar item{% endblock %}
+{% block corpo_classe %}area-admin{% endblock %}
+{% block conteudo %}
+<div class="container estreito">
+  <a href="{{ url_for('eventos.administrar', evento_id=evento.id) }}" class="voltar"><i class="bi bi-arrow-left"></i> {{ evento.nome }}</a>
+  <h1 class="mt-2 mb-4">Editar item</h1>
+  <form method="post" novalidate class="painel p-4">
+    {{ form.csrf_token }}
+    {{ campo(form.nome) }}
+    {{ campo(form.descricao) }}
+    <div class="row">
+      {{ campo(form.quantidade_necessaria, 'col-sm-6', min=item.quantidade_comprometida or 1,
+               ajuda='Já prometido: ' ~ item.quantidade_comprometida ~ ' ' ~ item.unidade) }}
+      {{ campo(form.unidade, 'col-sm-6') }}
+    </div>
+    <button type="submit" class="btn btn-primario">Salvar item</button>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% from '_macros.html' import campo %}
+{% block titulo %}Confirmar doação{% endblock %}
+{% block conteudo %}
+<div class="container">
+  <div class="row g-4 g-lg-5 justify-content-center">
+    <div class="col-lg-6">
+      <p class="sobretitulo">Passo 3 de 3</p>
+      <h1 class="mb-3">Confirme sua doação</h1>
+      <p class="text-secundario mb-4">
+        Usamos seu nome e telefone só para o organizador identificar a entrega.
+        O telefone não aparece no site.
+      </p>
+      <form method="post" novalidate class="painel p-4">
+        {{ form.csrf_token }}
+        {{ campo(form.nome, autocomplete='name', placeholder='Ex.: Maria Aparecida Souza') }}
+        {{ campo(form.telefone, autocomplete='tel', inputmode='tel', placeholder='(27) 99999-1234', data_mascara='telefone') }}
+        {{ campo(form.observacao, rows=3, placeholder='Ex.: entrego no sábado pela manhã', ajuda='Visível apenas para o organizador.') }}
+        <button type="submit" class="btn btn-primario w-100 mt-2" data-enviando="Confirmando…">Confirmar doação</button>
+      </form>
+    </div>
+
+    <div class="col-lg-4">
+      <aside class="painel resumo-doacao">
+        <h2>Resumo</h2>
+        <p class="text-secundario mb-3">{{ evento.nome }} · {{ evento.data|data_br }}</p>
+        <ul>
+          {% for linha in linhas %}
+            <li><span>{{ linha.item.nome }}</span><strong>{{ linha.quantidade }} {{ linha.item.unidade }}</strong></li>
+          {% endfor %}
+        </ul>
+        <a href="{{ url_for('doacoes.carrinho') }}" class="link-sublinhado">Alterar itens</a>
+      </aside>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% from '_macros.html' import campo, barra %}
+{% block titulo %}{{ evento.nome }}{% endblock %}
+{% block corpo_classe %}area-admin{% endblock %}
+{% block conteudo %}
+<div class="container">
+  <a href="{{ url_for('eventos.gerenciar') }}" class="voltar"><i class="bi bi-arrow-left"></i> Eventos</a>
+
+  <div class="cabecalho-evento-admin painel mt-2 mb-4">
+    <img src="{{ url_capa(evento) }}" alt="">
+    <div class="flex-grow-1">
+      <div class="d-flex flex-wrap align-items-center gap-2">
+        <h1 class="h3 mb-0">{{ evento.nome }}</h1>
+        <span class="selo {{ 'selo-recebida' if evento.aberto else 'selo-cancelada' }}">{{ 'Aberto' if evento.aberto else 'Encerrado' }}</span>
+      </div>
+      <p class="text-secundario mb-0">{{ evento.data|data_br }}{% if evento.local %} · {{ evento.local }}{% endif %}</p>
+    </div>
+    <div class="d-flex flex-wrap gap-2">
+      <a href="{{ url_for('eventos.detalhe', evento_id=evento.id) }}" class="btn btn-contorno btn-sm" target="_blank">Ver página</a>
+      <a href="{{ url_for('admin.doacoes', evento=evento.id) }}" class="btn btn-contorno btn-sm">Doações ({{ evento.doacoes|length }})</a>
+      <a href="{{ url_for('eventos.editar', evento_id=evento.id) }}" class="btn btn-primario btn-sm">Editar evento</a>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <div class="col-lg-8">
+      <h2 class="titulo-secao mb-3">Itens necessários</h2>
+      <div class="painel">
+        <div class="table-responsive">
+          <table class="table tabela-admin align-middle mb-0">
+            <thead><tr><th>Item</th><th class="text-end">Necessário</th><th style="min-width:160px">Prometido / recebido</th><th class="text-end">Disponível</th><th></th></tr></thead>
+            <tbody>
+              {% for item in evento.itens %}
+                <tr class="{% if not item.ativo %}linha-inativa{% endif %}">
+                  <td>
+                    <strong>{{ item.nome }}</strong>
+                    {% if not item.ativo %}<span class="selo selo-cancelada ms-1">Desativado</span>{% endif %}
+                    {% if item.descricao %}<br><small class="text-secundario">{{ item.descricao }}</small>{% endif %}
+                  </td>
+                  <td class="text-end">{{ item.quantidade_necessaria }} {{ item.unidade }}</td>
+                  <td>
+                    {{ barra(item.percentual_comprometido, item.percentual_recebido) }}
+                    <small class="text-secundario">{{ item.quantidade_comprometida }} / {{ item.quantidade_recebida }}</small>
+                  </td>
+                  <td class="text-end">{{ item.quantidade_disponivel }}</td>
+                  <td class="text-end text-nowrap">
+                    <a href="{{ url_for('eventos.editar_item', evento_id=evento.id, item_id=item.id) }}" class="btn-icone" aria-label="Editar {{ item.nome }}"><i class="bi bi-pencil"></i></a>
+                    <form method="post" action="{{ url_for('eventos.alternar_item', evento_id=evento.id, item_id=item.id) }}" class="d-inline">
+                      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                      <button class="btn-icone" type="submit" aria-label="{{ 'Desativar' if item.ativo else 'Reativar' }} {{ item.nome }}" title="{{ 'Desativar' if item.ativo else 'Reativar' }}">
+                        <i class="bi {{ 'bi-eye-slash' if item.ativo else 'bi-eye' }}"></i>
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+              {% else %}
+                <tr><td colspan="5" class="text-center text-secundario py-4">Nenhum item cadastrado. Use o formulário ao lado.</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <p class="form-text mt-2">Itens desativados somem da página pública, mas as doações já feitas continuam registradas.</p>
+    </div>
+
+    <div class="col-lg-4">
+      <h2 class="titulo-secao mb-3">Adicionar item</h2>
+      <form method="post" action="{{ url_for('eventos.novo_item', evento_id=evento.id) }}" class="painel p-4" novalidate>
+        {{ form_item.csrf_token }}
+        {{ campo(form_item.nome, placeholder='Ex.: Arroz') }}
+        {{ campo(form_item.descricao, placeholder='Ex.: tipo 1, pacote de 5 kg') }}
+        <div class="row g-2">
+          {{ campo(form_item.quantidade_necessaria, 'col-6', min=1) }}
+          {{ campo(form_item.unidade, 'col-6', placeholder='kg, litros…', list='unidades') }}
+        </div>
+        <datalist id="unidades">
+          <option value="kg"><option value="litros"><option value="unidades"><option value="pacotes"><option value="caixas"><option value="fardos"><option value="pares">
+        </datalist>
+        <button type="submit" class="btn btn-primario w-100">Adicionar item</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

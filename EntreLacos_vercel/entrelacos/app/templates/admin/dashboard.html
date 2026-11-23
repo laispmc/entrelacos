@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% from '_macros.html' import barra %}
+{% block titulo %}Painel{% endblock %}
+{% block corpo_classe %}area-admin{% endblock %}
+{% block conteudo %}
+<div class="container">
+  <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
+    <div>
+      <p class="sobretitulo">Olá, {{ current_user.nome.split()[0] }}</p>
+      <h1 class="mb-0">Painel de arrecadação</h1>
+    </div>
+    <a href="{{ url_for('eventos.novo') }}" class="btn btn-primario"><i class="bi bi-plus-lg"></i> Novo evento</a>
+  </div>
+
+  <div class="indicadores">
+    <a class="indicador" href="{{ url_for('eventos.gerenciar') }}">
+      <span>Eventos ativos</span><strong>{{ ind.eventos_ativos }}</strong>
+    </a>
+    <a class="indicador" href="{{ url_for('admin.doacoes') }}">
+      <span>Doações registradas</span><strong>{{ ind.doacoes_total }}</strong>
+    </a>
+    <a class="indicador ind-pendente" href="{{ url_for('admin.doacoes', status='pendente') }}">
+      <span>Pendentes</span><strong>{{ ind.doacoes_pendentes }}</strong>
+    </a>
+    <a class="indicador ind-parcial" href="{{ url_for('admin.doacoes', status='parcial') }}">
+      <span>Parcialmente recebidas</span><strong>{{ ind.doacoes_parciais }}</strong>
+    </a>
+    <a class="indicador ind-recebida" href="{{ url_for('admin.doacoes', status='recebida') }}">
+      <span>Totalmente recebidas</span><strong>{{ ind.doacoes_recebidas }}</strong>
+    </a>
+    <div class="indicador">
+      <span>Itens ainda necessários</span><strong>{{ ind.itens_necessarios }}</strong>
+      <small>{{ ind.itens_aguardando_entrega }} linha{{ 's' if ind.itens_aguardando_entrega != 1 }} de doação aguardando entrega</small>
+    </div>
+  </div>
+
+  <h2 class="titulo-secao mt-5 mb-3">Progresso por evento</h2>
+  <div class="painel">
+    <div class="table-responsive">
+      <table class="table tabela-admin align-middle mb-0">
+        <thead>
+          <tr>
+            <th>Evento</th>
+            <th class="d-none d-md-table-cell">Data</th>
+            <th class="text-end">Doações</th>
+            <th style="min-width: 220px">Prometido / recebido</th>
+            <th class="text-end d-none d-sm-table-cell">Itens em falta</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for linha in progresso %}
+            {% set ev = linha.evento %}
+            <tr>
+              <td>
+                <a href="{{ url_for('eventos.administrar', evento_id=ev.id) }}" class="fw-semibold">{{ ev.nome }}</a>
+                {% if not ev.aberto %}<span class="selo selo-cancelada ms-1">Encerrado</span>{% endif %}
+              </td>
+              <td class="d-none d-md-table-cell">{{ ev.data|data_br }}</td>
+              <td class="text-end"><a href="{{ url_for('admin.doacoes', evento=ev.id) }}">{{ linha.doacoes }}</a></td>
+              <td>
+                {{ barra(linha.comprometido, linha.recebido, rotulo=linha.comprometido ~ '% prometido, ' ~ linha.recebido ~ '% recebido') }}
+                <small class="text-secundario">{{ linha.comprometido }}% prometido · {{ linha.recebido }}% recebido</small>
+              </td>
+              <td class="text-end d-none d-sm-table-cell">{{ linha.faltando }} de {{ linha.qtd_itens }}</td>
+            </tr>
+          {% else %}
+            <tr><td colspan="5" class="text-center text-secundario py-4">Nenhum evento cadastrado ainda.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <p class="form-text mt-2">Percentuais calculados pela média dos itens de cada evento, já que as unidades variam (kg, litros, pacotes).</p>
+</div>
+{% endblock %}

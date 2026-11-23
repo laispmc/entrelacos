@@ -1,0 +1,3 @@
+# Dependências para rodar os testes (use dentro da pasta do código)
+-r requirements.txt
+pytest==9.2.0

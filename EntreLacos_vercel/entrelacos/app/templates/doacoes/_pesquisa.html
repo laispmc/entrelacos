@@ -1,0 +1,32 @@
+{# Formulário de pesquisa usado na consulta geral e na consulta de cada evento #}
+<form method="post" class="painel p-4 mb-4" novalidate>
+  {{ form.csrf_token }}
+  <div class="row g-3">
+    {% if form.evento is defined %}
+      <div class="col-12">
+        {{ form.evento.label(class='form-label') }}
+        {{ form.evento(class='form-select') }}
+      </div>
+    {% endif %}
+    <div class="col-12">
+      <fieldset>
+        <legend class="form-label">Pesquisar por</legend>
+        <div class="opcoes-segmentadas">
+          {% for opcao in form.tipo %}
+            {{ opcao(class='btn-check') }}
+            <label class="btn" for="{{ opcao.id }}">{{ opcao.label.text }}</label>
+          {% endfor %}
+        </div>
+      </fieldset>
+    </div>
+    <div class="col-12">
+      <label class="form-label" for="{{ form.termo.id }}" data-rotulo-busca>Nome do doador</label>
+      <div class="input-group has-validation">
+        {{ form.termo(class='form-control' ~ (' is-invalid' if form.termo.errors else ''), autocomplete='off', placeholder='Digite ao menos 3 letras') }}
+        <button class="btn btn-primario" type="submit"><i class="bi bi-search"></i> <span class="d-none d-sm-inline">Pesquisar</span></button>
+        {% for erro in form.termo.errors %}<div class="invalid-feedback">{{ erro }}</div>{% endfor %}
+      </div>
+      <p class="form-text mb-0 mt-2"><i class="bi bi-shield-lock"></i> A pesquisa por telefone é particular: o número não aparece nos resultados.</p>
+    </div>
+  </div>
+</form>

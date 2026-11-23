@@ -1,0 +1,240 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 981" width="1240" height="981" font-family="Segoe UI, Arial, sans-serif">
+<style>
+  .box { fill:#fffdf9; stroke:#c9bba5; stroke-width:1.2 }
+  .head { fill:#b04a2e }
+  .titulo { fill:#fff; font-weight:700; font-size:15px }
+  .col { fill:#2b2622; font-size:13px }
+  .pk { font-weight:700 }
+  .tag { fill:#8f3a22; font-size:10px; font-weight:700 }
+  .tipo { fill:#8a8077; font-size:12px }
+  .rel { fill:none; stroke:#5f6b3c; stroke-width:1.6 }
+  .card { fill:#5f6b3c; font-size:12px; font-weight:700 }
+  .legenda { fill:#6b625a; font-size:12px }
+</style>
+<rect width="100%" height="100%" fill="#f6f1e9"/>
+<text x="466" y="248" class="card">N</text>
+<text x="365" y="80" class="card">1</text>
+<path d="M480,253 H420 V85 H360" class="rel"/>
+<text x="886" y="101" class="card">N</text>
+<text x="785" y="80" class="card">1</text>
+<path d="M900,106 H840 V85 H780" class="rel"/>
+<text x="716" y="394" class="card">N</text>
+<text x="716" y="331" class="card">1</text>
+<path d="M710,400 V315" class="rel"/>
+<text x="466" y="482" class="card">N</text>
+<text x="365" y="440" class="card">1</text>
+<path d="M480,487 H420 V445 H360" class="rel"/>
+<text x="886" y="461" class="card">N</text>
+<text x="785" y="440" class="card">1</text>
+<path d="M900,466 H840 V445 H780" class="rel"/>
+<text x="1136" y="394" class="card">N</text>
+<text x="1136" y="268" class="card">1</text>
+<path d="M1130,400 V252" class="rel"/>
+<text x="716" y="714" class="card">N</text>
+<text x="716" y="607" class="card">1</text>
+<path d="M710,720 V591" class="rel"/>
+<text x="466" y="802" class="card">N</text>
+<text x="48" y="80" class="card">1</text>
+<path d="M480,807 H450 V558 H30 V85 H60" class="rel"/>
+<text x="886" y="781" class="card">N</text>
+<text x="785" y="760" class="card">1</text>
+<path d="M900,786 H840 V765 H780" class="rel"/>
+<text x="1136" y="714" class="card">N</text>
+<text x="1136" y="586" class="card">1</text>
+<path d="M1130,720 V570" class="rel"/>
+<g><rect x="60" y="40" width="300" height="170" rx="8" class="box"/>
+<path d="M60,48 a8,8 0 0 1 8,-8 h284 a8,8 0 0 1 8,8 v26 h-300 z" class="head"/>
+<text x="72" y="62" class="titulo">administradores</text>
+<text x="72" y="90" class="tag">PK</text>
+<text x="102" y="90" class="col pk">id</text>
+<text x="348" y="90" class="tipo" text-anchor="end">integer</text>
+<text x="72" y="111" class="tag"></text>
+<text x="102" y="111" class="col">nome *</text>
+<text x="348" y="111" class="tipo" text-anchor="end">varchar</text>
+<text x="72" y="132" class="tag"></text>
+<text x="102" y="132" class="col">email *</text>
+<text x="348" y="132" class="tipo" text-anchor="end">varchar</text>
+<text x="72" y="153" class="tag"></text>
+<text x="102" y="153" class="col">senha_hash *</text>
+<text x="348" y="153" class="tipo" text-anchor="end">varchar</text>
+<text x="72" y="174" class="tag"></text>
+<text x="102" y="174" class="col">ativo *</text>
+<text x="348" y="174" class="tipo" text-anchor="end">boolean</text>
+<text x="72" y="195" class="tag"></text>
+<text x="102" y="195" class="col">criado_em *</text>
+<text x="348" y="195" class="tipo" text-anchor="end">datetime</text>
+</g>
+<g><rect x="480" y="40" width="300" height="275" rx="8" class="box"/>
+<path d="M480,48 a8,8 0 0 1 8,-8 h284 a8,8 0 0 1 8,8 v26 h-300 z" class="head"/>
+<text x="492" y="62" class="titulo">eventos</text>
+<text x="492" y="90" class="tag">PK</text>
+<text x="522" y="90" class="col pk">id</text>
+<text x="768" y="90" class="tipo" text-anchor="end">integer</text>
+<text x="492" y="111" class="tag"></text>
+<text x="522" y="111" class="col">nome *</text>
+<text x="768" y="111" class="tipo" text-anchor="end">varchar</text>
+<text x="492" y="132" class="tag"></text>
+<text x="522" y="132" class="col">descricao</text>
+<text x="768" y="132" class="tipo" text-anchor="end">text</text>
+<text x="492" y="153" class="tag"></text>
+<text x="522" y="153" class="col">data *</text>
+<text x="768" y="153" class="tipo" text-anchor="end">date</text>
+<text x="492" y="174" class="tag"></text>
+<text x="522" y="174" class="col">local</text>
+<text x="768" y="174" class="tipo" text-anchor="end">varchar</text>
+<text x="492" y="195" class="tag"></text>
+<text x="522" y="195" class="col">imagem_capa *</text>
+<text x="768" y="195" class="tipo" text-anchor="end">varchar</text>
+<text x="492" y="216" class="tag"></text>
+<text x="522" y="216" class="col">imagem_dados</text>
+<text x="768" y="216" class="tipo" text-anchor="end">blob</text>
+<text x="492" y="237" class="tag"></text>
+<text x="522" y="237" class="col">imagem_tipo</text>
+<text x="768" y="237" class="tipo" text-anchor="end">varchar</text>
+<text x="492" y="258" class="tag"></text>
+<text x="522" y="258" class="col">status *</text>
+<text x="768" y="258" class="tipo" text-anchor="end">varchar</text>
+<text x="492" y="279" class="tag"></text>
+<text x="522" y="279" class="col">criado_em *</text>
+<text x="768" y="279" class="tipo" text-anchor="end">datetime</text>
+<text x="492" y="300" class="tag">FK</text>
+<text x="522" y="300" class="col">administrador_id *</text>
+<text x="768" y="300" class="tipo" text-anchor="end">integer</text>
+</g>
+<g><rect x="900" y="40" width="300" height="212" rx="8" class="box"/>
+<path d="M900,48 a8,8 0 0 1 8,-8 h284 a8,8 0 0 1 8,8 v26 h-300 z" class="head"/>
+<text x="912" y="62" class="titulo">itens</text>
+<text x="912" y="90" class="tag">PK</text>
+<text x="942" y="90" class="col pk">id</text>
+<text x="1188" y="90" class="tipo" text-anchor="end">integer</text>
+<text x="912" y="111" class="tag">FK</text>
+<text x="942" y="111" class="col">evento_id *</text>
+<text x="1188" y="111" class="tipo" text-anchor="end">integer</text>
+<text x="912" y="132" class="tag"></text>
+<text x="942" y="132" class="col">nome *</text>
+<text x="1188" y="132" class="tipo" text-anchor="end">varchar</text>
+<text x="912" y="153" class="tag"></text>
+<text x="942" y="153" class="col">descricao</text>
+<text x="1188" y="153" class="tipo" text-anchor="end">varchar</text>
+<text x="912" y="174" class="tag"></text>
+<text x="942" y="174" class="col">quantidade_necessaria *</text>
+<text x="1188" y="174" class="tipo" text-anchor="end">integer</text>
+<text x="912" y="195" class="tag"></text>
+<text x="942" y="195" class="col">quantidade_comprometida *</text>
+<text x="1188" y="195" class="tipo" text-anchor="end">integer</text>
+<text x="912" y="216" class="tag"></text>
+<text x="942" y="216" class="col">unidade *</text>
+<text x="1188" y="216" class="tipo" text-anchor="end">varchar</text>
+<text x="912" y="237" class="tag"></text>
+<text x="942" y="237" class="col">ativo *</text>
+<text x="1188" y="237" class="tipo" text-anchor="end">boolean</text>
+</g>
+<g><rect x="60" y="400" width="300" height="128" rx="8" class="box"/>
+<path d="M60,408 a8,8 0 0 1 8,-8 h284 a8,8 0 0 1 8,8 v26 h-300 z" class="head"/>
+<text x="72" y="422" class="titulo">doadores</text>
+<text x="72" y="450" class="tag">PK</text>
+<text x="102" y="450" class="col pk">id</text>
+<text x="348" y="450" class="tipo" text-anchor="end">integer</text>
+<text x="72" y="471" class="tag"></text>
+<text x="102" y="471" class="col">nome *</text>
+<text x="348" y="471" class="tipo" text-anchor="end">varchar</text>
+<text x="72" y="492" class="tag"></text>
+<text x="102" y="492" class="col">telefone *</text>
+<text x="348" y="492" class="tipo" text-anchor="end">varchar</text>
+<text x="72" y="513" class="tag"></text>
+<text x="102" y="513" class="col">criado_em *</text>
+<text x="348" y="513" class="tipo" text-anchor="end">datetime</text>
+</g>
+<g><rect x="480" y="400" width="300" height="191" rx="8" class="box"/>
+<path d="M480,408 a8,8 0 0 1 8,-8 h284 a8,8 0 0 1 8,8 v26 h-300 z" class="head"/>
+<text x="492" y="422" class="titulo">doacoes</text>
+<text x="492" y="450" class="tag">PK</text>
+<text x="522" y="450" class="col pk">id</text>
+<text x="768" y="450" class="tipo" text-anchor="end">integer</text>
+<text x="492" y="471" class="tag">FK</text>
+<text x="522" y="471" class="col">evento_id *</text>
+<text x="768" y="471" class="tipo" text-anchor="end">integer</text>
+<text x="492" y="492" class="tag">FK</text>
+<text x="522" y="492" class="col">doador_id *</text>
+<text x="768" y="492" class="tipo" text-anchor="end">integer</text>
+<text x="492" y="513" class="tag"></text>
+<text x="522" y="513" class="col">nome_informado *</text>
+<text x="768" y="513" class="tipo" text-anchor="end">varchar</text>
+<text x="492" y="534" class="tag"></text>
+<text x="522" y="534" class="col">observacao</text>
+<text x="768" y="534" class="tipo" text-anchor="end">varchar</text>
+<text x="492" y="555" class="tag"></text>
+<text x="522" y="555" class="col">status *</text>
+<text x="768" y="555" class="tipo" text-anchor="end">varchar</text>
+<text x="492" y="576" class="tag"></text>
+<text x="522" y="576" class="col">criado_em *</text>
+<text x="768" y="576" class="tipo" text-anchor="end">datetime</text>
+</g>
+<g><rect x="900" y="400" width="300" height="170" rx="8" class="box"/>
+<path d="M900,408 a8,8 0 0 1 8,-8 h284 a8,8 0 0 1 8,8 v26 h-300 z" class="head"/>
+<text x="912" y="422" class="titulo">doacao_itens</text>
+<text x="912" y="450" class="tag">PK</text>
+<text x="942" y="450" class="col pk">id</text>
+<text x="1188" y="450" class="tipo" text-anchor="end">integer</text>
+<text x="912" y="471" class="tag">FK</text>
+<text x="942" y="471" class="col">doacao_id *</text>
+<text x="1188" y="471" class="tipo" text-anchor="end">integer</text>
+<text x="912" y="492" class="tag">FK</text>
+<text x="942" y="492" class="col">item_id *</text>
+<text x="1188" y="492" class="tipo" text-anchor="end">integer</text>
+<text x="912" y="513" class="tag"></text>
+<text x="942" y="513" class="col">quantidade_prometida *</text>
+<text x="1188" y="513" class="tipo" text-anchor="end">integer</text>
+<text x="912" y="534" class="tag"></text>
+<text x="942" y="534" class="col">quantidade_recebida *</text>
+<text x="1188" y="534" class="tipo" text-anchor="end">integer</text>
+<text x="912" y="555" class="tag"></text>
+<text x="942" y="555" class="col">quantidade_cancelada *</text>
+<text x="1188" y="555" class="tipo" text-anchor="end">integer</text>
+</g>
+<g><rect x="480" y="720" width="300" height="191" rx="8" class="box"/>
+<path d="M480,728 a8,8 0 0 1 8,-8 h284 a8,8 0 0 1 8,8 v26 h-300 z" class="head"/>
+<text x="492" y="742" class="titulo">entregas</text>
+<text x="492" y="770" class="tag">PK</text>
+<text x="522" y="770" class="col pk">id</text>
+<text x="768" y="770" class="tipo" text-anchor="end">integer</text>
+<text x="492" y="791" class="tag">FK</text>
+<text x="522" y="791" class="col">doacao_id *</text>
+<text x="768" y="791" class="tipo" text-anchor="end">integer</text>
+<text x="492" y="812" class="tag">FK</text>
+<text x="522" y="812" class="col">administrador_id *</text>
+<text x="768" y="812" class="tipo" text-anchor="end">integer</text>
+<text x="492" y="833" class="tag"></text>
+<text x="522" y="833" class="col">token *</text>
+<text x="768" y="833" class="tipo" text-anchor="end">varchar</text>
+<text x="492" y="854" class="tag"></text>
+<text x="522" y="854" class="col">tipo *</text>
+<text x="768" y="854" class="tipo" text-anchor="end">varchar</text>
+<text x="492" y="875" class="tag"></text>
+<text x="522" y="875" class="col">observacao</text>
+<text x="768" y="875" class="tipo" text-anchor="end">varchar</text>
+<text x="492" y="896" class="tag"></text>
+<text x="522" y="896" class="col">registrado_em *</text>
+<text x="768" y="896" class="tipo" text-anchor="end">datetime</text>
+</g>
+<g><rect x="900" y="720" width="300" height="149" rx="8" class="box"/>
+<path d="M900,728 a8,8 0 0 1 8,-8 h284 a8,8 0 0 1 8,8 v26 h-300 z" class="head"/>
+<text x="912" y="742" class="titulo">recebimentos</text>
+<text x="912" y="770" class="tag">PK</text>
+<text x="942" y="770" class="col pk">id</text>
+<text x="1188" y="770" class="tipo" text-anchor="end">integer</text>
+<text x="912" y="791" class="tag">FK</text>
+<text x="942" y="791" class="col">entrega_id *</text>
+<text x="1188" y="791" class="tipo" text-anchor="end">integer</text>
+<text x="912" y="812" class="tag">FK</text>
+<text x="942" y="812" class="col">doacao_item_id *</text>
+<text x="1188" y="812" class="tipo" text-anchor="end">integer</text>
+<text x="912" y="833" class="tag"></text>
+<text x="942" y="833" class="col">quantidade_recebida *</text>
+<text x="1188" y="833" class="tipo" text-anchor="end">integer</text>
+<text x="912" y="854" class="tag"></text>
+<text x="942" y="854" class="col">quantidade_cancelada *</text>
+<text x="1188" y="854" class="tipo" text-anchor="end">integer</text>
+</g>
+<text x="60" y="953" class="legenda">EntreLaços — modelo físico (SQLite local · PostgreSQL em produção). PK = chave primária · FK = chave estrangeira · * = NOT NULL · 1 / N = cardinalidade (um para muitos)</text>
+</svg>

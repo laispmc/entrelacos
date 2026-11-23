@@ -1,0 +1,45 @@
+{# Lista de doações encontradas. Não mostra telefone nem observação. #}
+{% from '_macros.html' import selo %}
+{% if resultados is not none %}
+  {% if resultados %}
+    <h2 class="titulo-secao mb-3">{{ resultados|length }} doaç{{ 'ões' if resultados|length != 1 else 'ão' }} encontrada{{ 's' if resultados|length != 1 }}</h2>
+    {% for doacao in resultados %}
+      <article class="painel consulta-doacao mb-3">
+        <header>
+          <div>
+            <strong>{{ doacao.nome_informado }}</strong>
+            <span class="text-secundario">· {{ doacao.criado_em|data_br }}</span>
+            {% if mostrar_evento %}
+              <a class="evento-da-doacao" href="{{ url_for('eventos.detalhe', evento_id=doacao.evento_id) }}">
+                <i class="bi bi-calendar2-heart"></i> {{ doacao.evento.nome }} · {{ doacao.evento.data|data_br }}
+              </a>
+            {% endif %}
+          </div>
+          {{ selo(doacao.status, doacao.rotulo_status) }}
+        </header>
+        <div class="table-responsive">
+          <table class="table tabela-itens mb-0">
+            <thead><tr><th>Item</th><th class="text-end">Prometido</th><th class="text-end">Recebido</th><th class="text-end">Situação</th></tr></thead>
+            <tbody>
+              {% for di in doacao.itens %}
+                <tr>
+                  <td>{{ di.item.nome }}</td>
+                  <td class="text-end text-nowrap">{{ di.quantidade_prometida }} {{ di.item.unidade }}</td>
+                  <td class="text-end">{{ di.quantidade_recebida }}</td>
+                  <td class="text-end">{{ selo(di.status, di.rotulo_status) }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </article>
+    {% endfor %}
+    <p class="form-text">Precisa corrigir ou desistir de algo? Fale diretamente com o organizador do evento.</p>
+  {% else %}
+    <div class="vazio">
+      <i class="bi bi-search"></i>
+      <p class="mb-0">Nenhuma doação encontrada com os dados informados.<br>
+        Confira se digitou o nome ou o telefone igual ao usado na confirmação.</p>
+    </div>
+  {% endif %}
+{% endif %}

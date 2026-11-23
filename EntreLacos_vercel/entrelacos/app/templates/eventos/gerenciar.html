@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block titulo %}Gerenciar eventos{% endblock %}
+{% block corpo_classe %}area-admin{% endblock %}
+{% block conteudo %}
+<div class="container">
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+    <h1 class="mb-0">Eventos</h1>
+    <a href="{{ url_for('eventos.novo') }}" class="btn btn-primario"><i class="bi bi-plus-lg"></i> Novo evento</a>
+  </div>
+
+  {% if eventos %}
+    <div class="lista-gerenciar">
+      {% for evento in eventos %}
+        <a class="painel linha-gerenciar" href="{{ url_for('eventos.administrar', evento_id=evento.id) }}">
+          <img src="{{ url_capa(evento) }}" alt="">
+          <div class="flex-grow-1">
+            <strong>{{ evento.nome }}</strong>
+            <span class="text-secundario">{{ evento.data|data_br }}{% if evento.local %} · {{ evento.local }}{% endif %}</span>
+          </div>
+          <span class="text-secundario d-none d-sm-inline">{{ evento.itens_ativos|length }} itens · {{ evento.doacoes|length }} doações</span>
+          <span class="selo {{ 'selo-recebida' if evento.aberto else 'selo-cancelada' }}">{{ 'Aberto' if evento.aberto else 'Encerrado' }}</span>
+        </a>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="vazio">
+      <i class="bi bi-calendar-plus"></i>
+      <p>Nenhum evento cadastrado. Comece criando o primeiro.</p>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}
